@@ -11,10 +11,10 @@ import { Field } from './Field'
 import { VoidField } from './VoidField'
 
 const useFieldProps = (schema: Schema) => {
-  const scope = useExpressionScope()
+  const scope = useExpressionScope() // 消费外界的 ExpressionScopeContext 的内容
   return schema.toFieldProps({
     scope,
-  }) as any
+  }) as any // 将 scope 的内容 解析到 schema 上 
 }
 
 const useBasePath = (props: IRecursionFieldProps) => {
@@ -25,10 +25,11 @@ const useBasePath = (props: IRecursionFieldProps) => {
   return props.basePath || parent?.address
 }
 
+// SchemaField 实际上渲染成了这个 RecursionField
 export const RecursionField: ReactFC<IRecursionFieldProps> = (props) => {
   const basePath = useBasePath(props)
-  const fieldSchema = useMemo(() => new Schema(props.schema), [props.schema])
-  const fieldProps = useFieldProps(fieldSchema)
+  const fieldSchema = useMemo(() => new Schema(props.schema), [props.schema]) // 是 @formily/json-schema 导出的 schema类 的实例
+  const fieldProps = useFieldProps(fieldSchema) // 已经消费了ExpressionScopeContext 的 scope
   const renderProperties = (field?: GeneralField) => {
     if (props.onlyRenderSelf) return
     const properties = Schema.getOrderProperties(fieldSchema)

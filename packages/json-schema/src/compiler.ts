@@ -17,9 +17,14 @@ import {
 } from './shared'
 import { ISchema } from './types'
 
-const ExpRE = /^\s*\{\{([\s\S]*)\}\}\s*$/
+// 匹配 schema 中 {{}} 的内容
+const ExpRE = /^\s*\{\{([\s\S]*)\}\}\s*$/ 
 const Registry = {
   silent: false,
+  // new Function https://javascript.info/new-function
+  // with https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/with
+  // with https://blog.csdn.net/zwkkkk1/article/details/79725934
+  // 创建了一个作用域 可以访问scope的函数 在进行调用
   compile(expression: string, scope = {}) {
     if (Registry.silent) {
       try {

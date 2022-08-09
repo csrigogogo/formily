@@ -554,7 +554,8 @@ export class Schema<
     })
     return results
   }
-
+  
+  // 消费 scope 内容
   toFieldProps = (
     options?: ISchemaTransformerOptions
   ): IFieldFactoryProps<any, any> => {

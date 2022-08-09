@@ -234,11 +234,13 @@ const getUserReactions = (
       }
     }
   })
-}
+} 
 
+
+// options 为 scope 内容
 export const transformFieldProps = (
   schema: Schema,
-  options: ISchemaTransformerOptions
+  options: ISchemaTransformerOptions 
 ): IFieldFactoryProps<any, any> => {
   return {
     name: schema.name,

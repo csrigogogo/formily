@@ -52,7 +52,7 @@ export function createSchemaField<Components extends SchemaReactComponents>(
     const renderChildren = () => {
       return <RecursionField {...props} schema={schema} />
     }
-
+    // 外层包了 3 层 context 
     return (
       <SchemaOptionsContext.Provider value={options}>
         <SchemaComponentsContext.Provider
