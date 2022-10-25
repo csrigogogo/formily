@@ -122,6 +122,7 @@ export class Form<ValueType extends object = any> {
   protected makeObservable() {
     define(this, {
       fields: observable.shallow,
+      indexes: observable.shallow,
       initialized: observable.ref,
       validating: observable.ref,
       submitting: observable.ref,
@@ -155,8 +156,6 @@ export class Form<ValueType extends object = any> {
       deleteValuesIn: action,
       setSubmitting: action,
       setValidating: action,
-      setFormGraph: action,
-      clearFormGraph: action,
       reset: action,
       submit: action,
       validate: action,

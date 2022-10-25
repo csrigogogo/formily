@@ -1,10 +1,4 @@
-import {
-  isValid,
-  isEmpty,
-  toArr,
-  FormPathPattern,
-  isArr,
-} from '@formily/shared'
+import { isValid, toArr, FormPathPattern, isArr } from '@formily/shared'
 import {
   ValidatorTriggerType,
   parseValidatorDescriptions,
@@ -78,7 +72,6 @@ export class Field<
   feedbacks: IFieldFeedback[]
   caches: IFieldCaches = {}
   requests: IFieldRequests = {}
-
   constructor(
     address: FormPathPattern,
     props: IFieldProps<Decorator, Component, TextType, ValueType>,
@@ -225,8 +218,14 @@ export class Field<
         () => this.value,
         (value) => {
           this.notify(LifeCycleTypes.ON_FIELD_VALUE_CHANGE)
-          if (isValid(value) && this.selfModified && !this.caches.inputting) {
-            validateSelf(this)
+          if (isValid(value)) {
+            if (this.selfModified && !this.caches.inputting) {
+              validateSelf(this)
+            }
+            if (this.display === 'none') {
+              this.caches.value = toJS(value)
+              this.form.deleteValuesIn(this.path)
+            }
           }
         }
       ),
@@ -240,16 +239,14 @@ export class Field<
         () => this.display,
         (display) => {
           const value = this.value
-          if (display === 'visible') {
-            if (isEmpty(value)) {
+          if (display !== 'none') {
+            if (!isValid(value)) {
               this.setValue(this.caches.value)
               this.caches.value = undefined
             }
           } else {
             this.caches.value = toJS(value) ?? toJS(this.initialValue)
-            if (display === 'none') {
-              this.form.deleteValuesIn(this.path)
-            }
+            this.form.deleteValuesIn(this.path)
           }
           if (display === 'none' || display === 'hidden') {
             this.setFeedback({
